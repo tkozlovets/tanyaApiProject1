@@ -26,10 +26,8 @@ describe('Posts suit', () => {
   it('3.Get posts with id=55.60', () => {
     cy.request({
       method: 'GET',
-      url: '/posts',
-      qs: {
-        id: '55,60'
-      }
+      url: '/posts?id=55&id=60',
+
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.have.lengthOf(2);
@@ -57,21 +55,24 @@ describe('Posts suit', () => {
 
   });
 
-  it('5.Create object and return status code 201', () => {
+  it('5.Create post with adding access token in header', () => {
 
-    const accessToken = 'Token??';
+    const accessToken = 'xxx.xxx.xxx';
 
-    cy.request({
+      cy.request({
       method: 'POST',
       url: '/664/posts',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
       },
-      body: {
+          body: {
+            title: 'New post1',
+            content: 'New content1'
+          },
+      failOnStatusCode: false,
 
-      }
-    }).then((response) => {
+     }).then((response) => {
       expect(response.status).to.eq(201);
     });
 
